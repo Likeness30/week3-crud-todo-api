@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 app.use(express.json()); // Parse JSON bodies
@@ -7,19 +9,19 @@ let todos = [
   { id: 2, task: 'Build CRUD API', completed: false },
 ];
 
-// GET All – Read
+/* GET All – Read from db */
 app.get('/todos', (req, res) => {
   res.status(200).json(todos); // Send array as JSON
 });
 
-// POST New – Create
+/* POST New – Create */
 app.post('/todos', (req, res) => {
   const newTodo = { id: todos.length + 1, ...req.body }; // Auto-ID
   todos.push(newTodo);
   res.status(201).json(newTodo); // Echo back
 });
 
-// PATCH Update – Partial
+/* PATCH Update – Partial */
 app.patch('/todos/:id', (req, res) => {
   const todo = todos.find((t) => t.id === parseInt(req.params.id)); // Array.find()
   if (!todo) return res.status(404).json({ message: 'Todo not found' });
@@ -27,7 +29,7 @@ app.patch('/todos/:id', (req, res) => {
   res.status(200).json(todo);
 });
 
-// DELETE Remove
+/* DELETE Remove */
 app.delete('/todos/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const initialLength = todos.length;
